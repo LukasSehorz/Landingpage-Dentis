@@ -58,7 +58,7 @@ const optionals = [
 
 export default function Mechanism() {
   return (
-    <section className="section-pad border-t border-line bg-base">
+    <section className="section-pad border-t border-line bg-mist">
       <div className="container-page">
         <SectionHeading
           index="02"
@@ -70,7 +70,7 @@ export default function Mechanism() {
         <ol className="mt-12 grid gap-y-2 md:gap-y-3">
           {steps.map((s, i) => (
             <Reveal as="li" key={s.title} delay={i * 0.05}>
-              <div className="group relative flex gap-5 rounded-card border border-transparent p-4 transition-colors hover:border-line hover:bg-[#F7F8FA] md:gap-7 md:p-5">
+              <div className="group relative flex gap-5 rounded-card border border-transparent p-4 transition-colors hover:border-line hover:bg-white md:gap-7 md:p-5">
                 {/* Number + connector */}
                 <div className="relative flex flex-col items-center">
                   <span className="z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-navy font-serif text-[20px] font-bold text-white">
@@ -84,10 +84,10 @@ export default function Mechanism() {
                   )}
                 </div>
                 <div className="pt-1.5">
-                  <h3 className="font-serif text-[21px] font-bold leading-tight text-navy">
+                  <h3 className="font-serif text-[22px] font-bold leading-tight text-navy">
                     {s.title}
                   </h3>
-                  <p className="mt-2 max-w-2xl text-[15.5px] leading-relaxed text-ink">
+                  <p className="mt-2 max-w-2xl text-[16.5px] leading-relaxed text-ink">
                     {s.body}
                   </p>
                 </div>
@@ -98,22 +98,22 @@ export default function Mechanism() {
 
         {/* Optional add-ons */}
         <Reveal delay={0.1}>
-          <div className="mt-14 rounded-card border border-line bg-[#F7F8FA] p-6 md:p-8">
+          <div className="mt-14 rounded-card border border-line bg-white p-6 shadow-soft md:p-9">
             <p className="eyebrow text-amber-600">Optional dazu</p>
-            <p className="mt-1.5 text-[15px] text-ink/75">
+            <p className="mt-1.5 text-[16px] text-ink/75">
               Bausteine, die wir bei Bedarf ergänzen:
             </p>
-            <ul className="mt-6 grid gap-x-8 gap-y-4 sm:grid-cols-2">
+            <ul className="mt-7 grid gap-x-10 gap-y-6 sm:grid-cols-2">
               {optionals.map((o) => (
-                <li key={o.title} className="flex gap-3">
-                  <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-amber/10">
-                    <Plus className="h-3.5 w-3.5 text-amber" />
+                <li key={o.title} className="flex gap-3.5">
+                  <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-amber/10">
+                    <Plus className="h-4 w-4 text-amber" />
                   </span>
                   <div>
-                    <p className="text-[15px] font-semibold leading-snug text-navy">
+                    <p className="text-[16.5px] font-semibold leading-snug text-navy">
                       {o.title}
                     </p>
-                    <p className="mt-0.5 text-[13.5px] leading-snug text-ink/70">
+                    <p className="mt-1 text-[15px] leading-snug text-ink/70">
                       {o.sub}
                     </p>
                   </div>

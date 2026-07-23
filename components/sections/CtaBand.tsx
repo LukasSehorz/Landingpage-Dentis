@@ -1,6 +1,5 @@
 import CtaButton from "@/components/ui/CtaButton";
 import Reveal from "@/components/ui/Reveal";
-import Eyebrow from "@/components/ui/Eyebrow";
 
 export default function CtaBand({
   eyebrow,
@@ -12,17 +11,23 @@ export default function CtaBand({
   note?: string;
 }) {
   return (
-    <section className="border-t border-line bg-base py-16 md:py-20">
-      <div className="container-page">
+    <section className="relative overflow-hidden bg-navy py-16 md:py-20">
+      {/* faint grain + soft blue glow so the dark band reads as intentional */}
+      <div className="grain" aria-hidden />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-amber/20 blur-3xl"
+      />
+      <div className="container-page relative">
         <div className="flex flex-col items-start gap-8 lg:flex-row lg:items-center lg:justify-between">
           <div className="max-w-2xl">
             {eyebrow && (
               <Reveal>
-                <Eyebrow tone="amber">{eyebrow}</Eyebrow>
+                <p className="eyebrow text-teal">{eyebrow}</p>
               </Reveal>
             )}
             <Reveal delay={0.05}>
-              <h2 className="mt-3 font-serif text-[clamp(26px,3.4vw,40px)] leading-[1.1] text-navy">
+              <h2 className="mt-3 font-serif text-[clamp(26px,3.4vw,40px)] leading-[1.1] text-white">
                 {title}
               </h2>
             </Reveal>
@@ -31,7 +36,7 @@ export default function CtaBand({
             <CtaButton href="#formular">
               Kostenlose Potenzial-Analyse anfragen
             </CtaButton>
-            {note && <p className="mt-3 text-[13px] text-ink/60">{note}</p>}
+            {note && <p className="mt-3 text-[13px] text-white/60">{note}</p>}
           </Reveal>
         </div>
       </div>

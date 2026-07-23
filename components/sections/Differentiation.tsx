@@ -1,28 +1,29 @@
 import Image from "next/image";
 import Reveal from "@/components/ui/Reveal";
 import Eyebrow from "@/components/ui/Eyebrow";
+import SectionCta from "@/components/ui/SectionCta";
 import { Check } from "@/components/ui/icons";
 
 const points = [
   {
-    lead: "Ausschließlich Premium-Implantologie.",
-    rest: " Wir streuen unser Budget nicht über zehn Branchen. Unsere gesamte Erfahrung fließt in genau Ihre Nische.",
+    lead: "Tiefe Expertise, voll auf Ihren Markt fokussiert.",
+    rest: " Wir verzetteln uns nicht über zehn Branchen. Unsere gesamte Erfahrung fließt in genau eine Nische: hochwertige Implantologie. Genau deshalb funktioniert es.",
   },
   {
-    lead: "Ein nachvollziehbares System statt leerer Versprechen.",
-    rest: " Sie sehen genau, wie Anfragen entstehen und qualifiziert werden.",
+    lead: "Eine echte Done-for-you-Lösung, die bereits Neukunden gebracht hat.",
+    rest: " Kein Theorie-Konzept, sondern ein erprobtes System mit nachweisbaren Ergebnissen. Sie behandeln, wir kümmern uns um alles andere.",
   },
   {
-    lead: "Die Gründer arbeiten persönlich an Ihrem Account.",
-    rest: " Direkter Draht, schnelle Entscheidungen, kein Weiterreichen an Praktikanten.",
+    lead: "Ein junges, agiles Team, das schnell liefert.",
+    rest: " Kurze Wege, schnelle Umsetzung, keine trägen Agentur-Prozesse. Wenn etwas ansteht, passiert es, nicht nächste Woche.",
   },
   {
-    lead: "Keine Knebelverträge.",
-    rest: " Faire Laufzeiten. Wir wollen überzeugen, nicht binden.",
+    lead: "Persönliche Betreuung mit extrem schnellen Antworten.",
+    rest: " Sie haben feste Ansprechpartner, die wirklich erreichbar sind und zeitnah reagieren. Kein anonymes Ticket-System, kein Praktikant.",
   },
   {
-    lead: "Rechtssicher.",
-    rest: " Wir arbeiten konform mit Heilmittelwerbegesetz (HWG) und DSGVO.",
+    lead: "Sie stehen bei uns immer an erster Stelle.",
+    rest: " Wir sind keine Agentur, bei der Sie einmal unterschreiben und nie wieder etwas hören. Wir arbeiten so lange an einer Lösung, bis Ihr Problem wirklich gelöst ist.",
   },
 ];
 
@@ -64,7 +65,7 @@ export default function Differentiation() {
                     <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-success/15">
                       <Check className="h-3.5 w-3.5 text-success" />
                     </span>
-                    <p className="text-[16px] leading-relaxed text-ink">
+                    <p className="text-[16.5px] leading-relaxed text-ink">
                       <strong className="font-semibold text-navy">
                         {p.lead}
                       </strong>
@@ -76,6 +77,8 @@ export default function Differentiation() {
             </ul>
           </div>
         </div>
+
+        <SectionCta text="Klingt das nach der Zusammenarbeit, die Sie sich vorstellen? Dann lernen wir uns unverbindlich kennen und schauen, ob es passt." />
       </div>
     </section>
   );

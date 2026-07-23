@@ -1,5 +1,6 @@
 import Reveal from "@/components/ui/Reveal";
 import SectionHeading from "@/components/ui/SectionHeading";
+import SectionCta from "@/components/ui/SectionCta";
 import { Check } from "@/components/ui/icons";
 
 const services = [
@@ -32,28 +33,30 @@ export default function Package() {
           intro="Wir bauen Ihnen ein komplettes, betreutes System für planbar mehr Umsatz, Monat für Monat. Sie behandeln, um alles andere kümmern wir uns."
         />
 
-        <ul className="mt-12 grid max-w-4xl gap-x-10 gap-y-6 text-left sm:grid-cols-2">
+        <ul className="mt-12 grid gap-5 sm:grid-cols-2">
           {services.map((s, i) => (
             <Reveal
               as="li"
               key={s.title}
               delay={(i % 2) * 0.05}
-              className="flex gap-3.5"
+              className="flex gap-4 rounded-card border border-line bg-mist p-6 md:p-7"
             >
-              <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-amber/10">
-                <Check className="h-3.5 w-3.5 text-amber" />
+              <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-amber/10">
+                <Check className="h-4 w-4 text-amber" />
               </span>
               <div>
-                <p className="text-[16px] font-semibold leading-snug text-navy">
+                <p className="text-[18px] font-semibold leading-snug text-navy">
                   {s.title}
                 </p>
-                <p className="mt-0.5 text-[14px] leading-snug text-ink/70">
+                <p className="mt-1.5 text-[15.5px] leading-relaxed text-ink/75">
                   {s.sub}
                 </p>
               </div>
             </Reveal>
           ))}
         </ul>
+
+        <SectionCta text="Genau dieses System bauen wir für Ihre Praxis auf — schlüsselfertig und laufend betreut. Lassen Sie uns unverbindlich prüfen, was für Sie drin ist." />
       </div>
     </section>
   );

@@ -12,10 +12,14 @@ const freebies = [
 export default function Hero() {
   return (
     <section id="top" className="relative bg-base">
-      <div className="container-page py-12 md:py-16 lg:py-20">
-        {/* 1 · HEADLINE — top, full width */}
+      {/*
+        PRIMARY BLOCK — fills the viewport (minus the ~72px sticky header) so
+        headline → subheadline → video → button are all visible above the fold,
+        and the value-prop paragraph below only appears once the user scrolls.
+      */}
+      <div className="container-page flex min-h-[calc(100svh-72px)] flex-col justify-center py-8 md:py-10">
+        {/* 1 · HEADLINE + SUBHEADLINE */}
         <div className="mx-auto max-w-4xl text-center">
-          {/* Audience line — editorial, not a pill badge */}
           <Reveal>
             <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-[12px] font-semibold uppercase tracking-[0.16em] text-ink/50">
               <span>Implantatpraxen</span>
@@ -26,35 +30,34 @@ export default function Hero() {
             </div>
           </Reveal>
           <Reveal delay={0.1}>
-            <h1 className="nums mt-6 font-serif text-[clamp(30px,4.4vw,52px)] font-bold leading-[1.06] text-navy">
+            <h1 className="nums mt-5 font-serif text-[clamp(30px,4.2vw,50px)] font-bold leading-[1.07] text-navy">
               Ø&nbsp;20.000&nbsp;Euro Mehrumsatz pro Monat durch planbare
               Selbstzahler.
-              <span className="mt-3 block text-[0.64em] font-bold leading-tight text-amber">
+              <span className="mt-3 block text-[0.62em] font-bold leading-tight text-amber">
                 Was würde das für Ihre Praxis bedeuten?
               </span>
             </h1>
           </Reveal>
         </div>
 
-        {/* 2 · VIDEO — large, dominant, centered, with corner brackets */}
-        <Reveal delay={0.1} y={16} className="mx-auto mt-10 max-w-5xl md:mt-12">
+        {/* 2 · VIDEO — compact on desktop (mobile stays full width), corner brackets */}
+        <Reveal delay={0.1} y={16} className="mx-auto mt-8 w-full max-w-[520px]">
           <div className="relative">
-            {/* black L-shaped corner brackets, offset outward from the video */}
             <span
               aria-hidden
-              className="pointer-events-none absolute -left-3 -top-3 h-6 w-6 border-l-2 border-t-2 border-navy sm:-left-4 sm:-top-4 sm:h-9 sm:w-9"
+              className="pointer-events-none absolute -left-3 -top-3 h-6 w-6 border-l-2 border-t-2 border-navy sm:-left-4 sm:-top-4 sm:h-8 sm:w-8"
             />
             <span
               aria-hidden
-              className="pointer-events-none absolute -right-3 -top-3 h-6 w-6 border-r-2 border-t-2 border-navy sm:-right-4 sm:-top-4 sm:h-9 sm:w-9"
+              className="pointer-events-none absolute -right-3 -top-3 h-6 w-6 border-r-2 border-t-2 border-navy sm:-right-4 sm:-top-4 sm:h-8 sm:w-8"
             />
             <span
               aria-hidden
-              className="pointer-events-none absolute -bottom-3 -left-3 h-6 w-6 border-b-2 border-l-2 border-navy sm:-bottom-4 sm:-left-4 sm:h-9 sm:w-9"
+              className="pointer-events-none absolute -bottom-3 -left-3 h-6 w-6 border-b-2 border-l-2 border-navy sm:-bottom-4 sm:-left-4 sm:h-8 sm:w-8"
             />
             <span
               aria-hidden
-              className="pointer-events-none absolute -bottom-3 -right-3 h-6 w-6 border-b-2 border-r-2 border-navy sm:-bottom-4 sm:-right-4 sm:h-9 sm:w-9"
+              className="pointer-events-none absolute -bottom-3 -right-3 h-6 w-6 border-b-2 border-r-2 border-navy sm:-bottom-4 sm:-right-4 sm:h-8 sm:w-8"
             />
             <FounderVideo />
           </div>
@@ -62,7 +65,7 @@ export default function Hero() {
 
         {/* 3 · CTA — directly under the video */}
         <Reveal delay={0.15}>
-          <div className="mt-9 flex flex-col items-center">
+          <div className="mt-7 flex flex-col items-center">
             <CtaButton href="#formular">
               Kostenlose Potenzial-Analyse anfragen
             </CtaButton>
@@ -72,10 +75,16 @@ export default function Hero() {
             </p>
           </div>
         </Reveal>
+      </div>
 
-        {/* 4 · SUBLINE — under the button */}
-        <Reveal delay={0.2}>
-          <div className="mx-auto mt-9 max-w-2xl text-center">
+      {/*
+        BELOW-THE-FOLD — value proposition + free deliverables.
+        Intentionally placed after the full-height primary block so it only
+        becomes visible on scroll (on desktop and mobile alike).
+      */}
+      <div className="container-page pb-16 md:pb-24">
+        <Reveal>
+          <div className="mx-auto max-w-2xl text-center">
             <span
               aria-hidden
               className="mx-auto mb-6 block h-px w-12 bg-amber/60"
@@ -90,9 +99,8 @@ export default function Hero() {
           </div>
         </Reveal>
 
-        {/* 5 · Free upfront deliverables */}
-        <Reveal delay={0.25}>
-          <div className="mx-auto mt-9 max-w-2xl rounded-xl border border-line bg-[#F7F8FA] px-5 py-4 text-center">
+        <Reveal delay={0.1}>
+          <div className="mx-auto mt-9 max-w-2xl rounded-xl border border-line bg-[#F5F7FB] px-5 py-4 text-center">
             <p className="eyebrow text-amber-600">
               Kostenlos vorab, ohne Gegenleistung
             </p>

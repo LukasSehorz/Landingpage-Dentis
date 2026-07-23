@@ -36,6 +36,8 @@ const config: Config = {
         success: "#1A56B0",
         // Neutral hairlines / borders
         line: "#E6E8EC",
+        // Subtle tinted surface for alternating section backgrounds
+        mist: "#EAF0F9",
       },
       fontFamily: {
         // Standard, non-"AI" system sans across the whole site

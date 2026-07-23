@@ -14,7 +14,7 @@ export default function FormSection() {
   return (
     <section
       id="formular"
-      className="scroll-mt-24 border-t border-line bg-base py-20 md:py-28"
+      className="scroll-mt-24 border-t border-line bg-mist py-20 md:py-28"
     >
       <div className="container-page">
         <div className="grid gap-10 lg:grid-cols-[0.82fr_1.18fr] lg:gap-14">
@@ -38,10 +38,10 @@ export default function FormSection() {
               <ul className="mt-8 space-y-3">
                 {reassure.map((r) => (
                   <li key={r} className="flex items-center gap-3">
-                    <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-amber/15">
-                      <Check className="h-3 w-3 text-amber" />
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-amber/15">
+                      <Check className="h-3.5 w-3.5 text-amber" />
                     </span>
-                    <span className="text-[14.5px] text-ink">{r}</span>
+                    <span className="text-[16px] text-ink">{r}</span>
                   </li>
                 ))}
               </ul>

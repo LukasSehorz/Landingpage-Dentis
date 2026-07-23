@@ -1,5 +1,6 @@
 import Reveal from "@/components/ui/Reveal";
 import SectionHeading from "@/components/ui/SectionHeading";
+import CtaButton from "@/components/ui/CtaButton";
 
 const questions = [
   "Bekommen Sie vor allem Preisjäger, die nach dem Kostenvoranschlag wieder verschwinden?",
@@ -48,6 +49,17 @@ export default function PainPoint() {
               Genau das lösen wir, spezialisiert und planbar.
             </span>
           </p>
+        </Reveal>
+
+        <Reveal delay={0.15}>
+          <div className="mt-8 flex flex-col items-start gap-3">
+            <CtaButton href="#formular">
+              Kostenlose Potenzial-Analyse anfragen
+            </CtaButton>
+            <p className="text-[13px] text-ink/55">
+              Kostenlos &amp; unverbindlich · Antwort innerhalb von 24 Stunden
+            </p>
+          </div>
         </Reveal>
       </div>
     </section>

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import SectionHeading from "@/components/ui/SectionHeading";
+import SectionCta from "@/components/ui/SectionCta";
 import { Plus } from "@/components/ui/icons";
 
 type Item = {
@@ -110,6 +111,8 @@ export default function Faq() {
             <AccordionRow key={i} item={item} index={i} />
           ))}
         </div>
+
+        <SectionCta text="Noch eine Frage offen? Die klären wir am schnellsten direkt, im kostenlosen Erstgespräch mit ehrlicher Einschätzung für Ihren Standort." />
       </div>
     </section>
   );
