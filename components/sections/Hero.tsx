@@ -17,7 +17,7 @@ export default function Hero() {
         headline → subheadline → video → button are all visible above the fold,
         and the value-prop paragraph below only appears once the user scrolls.
       */}
-      <div className="container-page flex min-h-[calc(100svh-72px)] flex-col justify-center py-8 md:py-10">
+      <div className="container-page flex min-h-[calc(100svh-72px)] flex-col justify-center py-8 md:justify-between md:py-12">
         {/* 1 · HEADLINE + SUBHEADLINE */}
         <div className="mx-auto max-w-4xl text-center">
           <Reveal>
@@ -41,7 +41,7 @@ export default function Hero() {
         </div>
 
         {/* 2 · VIDEO — compact on desktop (mobile stays full width), corner brackets */}
-        <Reveal delay={0.1} y={16} className="mx-auto mt-8 w-full max-w-[520px]">
+        <Reveal delay={0.1} y={16} className="mx-auto mt-8 w-full max-w-[520px] md:mt-0">
           <div className="relative">
             <span
               aria-hidden
@@ -65,7 +65,7 @@ export default function Hero() {
 
         {/* 3 · CTA — directly under the video */}
         <Reveal delay={0.15}>
-          <div className="mt-7 flex flex-col items-center">
+          <div className="mt-7 flex flex-col items-center md:mt-0">
             <CtaButton href="#formular">
               Kostenlose Potenzial-Analyse anfragen
             </CtaButton>
