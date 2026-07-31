@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowRight, Check } from "@/components/ui/icons";
+import { prefillCalendly } from "@/components/sections/CalendlySection";
 
 /* ------------------------------------------------------------------ */
 /* Question config — copy 1:1 from the content deck                    */
@@ -340,12 +341,13 @@ export default function LeadForm() {
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateStep(3)) return;
-    setSubmitted(isFit(choices) ? "fit" : "nofit");
-    if (typeof window !== "undefined") {
-      document
-        .getElementById("formular")
-        ?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    const fit = isFit(choices);
+    setSubmitted(fit ? "fit" : "nofit");
+    if (typeof window === "undefined") return;
+    /* Bewusst OHNE Vorfilterung: solange die Auslastung es zulässt, darf jede
+       Anfrage buchen — auch die als nicht ideal eingestufte. Erst bei zu hohem
+       Andrang wieder auf `fit` einschränken. */
+    prefillCalendly(contact.name.trim(), contact.email.trim());
   };
 
   /* `animate` must ALWAYS be passed: the server renders the `initial`
@@ -556,10 +558,21 @@ function PostSubmit({ variant }: { variant: "fit" | "nofit" }) {
       <div className="rounded-card border border-line bg-base p-8 shadow-card md:p-10">
         <p className="eyebrow text-ink/50">Danke für Ihre Anfrage</p>
         <p className="mt-4 max-w-2xl text-[17px] leading-relaxed text-navy">
-          Danke für Ihre Zeit. Aktuell passt unser System am besten zu Praxen
-          mit klarem Implantat-Schwerpunkt und freien Kapazitäten. Sobald das
-          bei Ihnen der Fall ist, freuen wir uns über Ihre Anfrage.
+          Danke für Ihre Zeit. Unser System spielt seine Stärken vor allem bei
+          Praxen mit klarem Implantat-Schwerpunkt und freien Kapazitäten aus.
+          Buchen Sie sich unten dennoch gern einen Termin — wir sagen Ihnen im
+          Gespräch offen, ob sich der Einsatz für Sie lohnt.
         </p>
+
+        <a
+          href="#termin"
+          className="group mt-7 inline-flex items-center gap-2.5 rounded-full bg-amber px-6 py-3.5 text-[15px] font-semibold text-white shadow-cta transition-colors hover:bg-amber-600"
+        >
+          Wunschtermin im Kalender wählen
+          <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white/20">
+            <ArrowRight className="h-3 w-3 transition-transform duration-200 group-hover:translate-x-0.5" />
+          </span>
+        </a>
       </div>
     );
   }
@@ -578,17 +591,20 @@ function PostSubmit({ variant }: { variant: "fit" | "nofit" }) {
         Einschätzung, kein Verkaufsdruck.
       </p>
 
-      {/* Calendar embed placeholder */}
-      <div className="mt-7 flex min-h-[220px] items-center justify-center rounded-xl border border-dashed border-line bg-cream/60 p-6 text-center">
-        <div>
-          <p className="font-mono text-[13px] font-semibold text-navy/70">
-            [Kalender-Einbettung, z. B. Calendly / cal.com]
-          </p>
-          <p className="mt-1 font-mono text-[12px] text-ink/50">
-            Platzhalter: Kalender-Embed vor dem Livegang einsetzen.
-          </p>
-        </div>
-      </div>
+      {/* Kalender: eigene Section direkt unterhalb des Formulars */}
+      <a
+        href="#termin"
+        className="group mt-7 inline-flex items-center gap-2.5 rounded-full bg-amber px-6 py-3.5 text-[15px] font-semibold text-white shadow-cta transition-colors hover:bg-amber-600"
+      >
+        Wunschtermin im Kalender wählen
+        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-white/20">
+          <ArrowRight className="h-3 w-3 transition-transform duration-200 group-hover:translate-x-0.5" />
+        </span>
+      </a>
+      <p className="mt-3 text-[13.5px] text-ink/65">
+        Ihr Kalender ist direkt unterhalb geöffnet, Name und E-Mail sind bereits
+        vorausgefüllt.
+      </p>
     </div>
   );
 }
