@@ -24,9 +24,26 @@ declare global {
       initInlineWidget: (options: {
         url: string;
         parentElement: HTMLElement;
+        /**
+         * Auto-Resize: Calendly hängt einen message-Listener ans Elternfenster
+         * und setzt `parentElement.style.height` auf die tatsächliche
+         * Inhaltshöhe (Event `calendly.page_height`). Damit entfällt die
+         * innere Scrollleiste des iframes.
+         */
+        resize?: boolean;
       }) => void;
       initInlineWidgets?: () => void;
     };
+  }
+}
+
+/** Nachrichten aus dem Widget akzeptieren wir nur von calendly.com. */
+function isCalendlyOrigin(origin: string): boolean {
+  try {
+    const { hostname } = new URL(origin);
+    return hostname === "calendly.com" || hostname.endsWith(".calendly.com");
+  } catch {
+    return false;
   }
 }
 
@@ -163,10 +180,32 @@ export default function CalendlySection({ a1 }: { a1?: string }) {
   const [status, setStatus] = useState<"loading" | "ready" | "error">(
     "loading",
   );
+  /** true, sobald Calendly die erste echte Inhaltshöhe gemeldet hat. */
+  const [autoHeight, setAutoHeight] = useState(false);
   const [fallbackUrl, setFallbackUrl] = useState(CALENDLY_URL);
+
+  /* Absicherung: Calendly meldet die Inhaltshöhe per postMessage
+     ({ event: "calendly.page_height", payload: { height: "950px" } }) und
+     setzt sie selbst als Inline-Style am Container. Sobald die erste echte
+     Höhe da ist, endet der Ladezustand und unsere Mindesthöhe fällt weg —
+     ab dann bestimmt ausschließlich Calendly die Höhe. */
+  useEffect(() => {
+    const onMessage = (event: MessageEvent) => {
+      if (!isCalendlyOrigin(event.origin)) return;
+      const data: unknown = event.data;
+      if (!data || typeof data !== "object") return;
+      if ((data as { event?: unknown }).event !== "calendly.page_height") return;
+      setAutoHeight(true);
+      setStatus((prev) => (prev === "error" ? prev : "ready"));
+    };
+
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
+  }, []);
 
   useEffect(() => {
     let cancelled = false;
+    let readyTimer: ReturnType<typeof setTimeout> | undefined;
     const url = buildCalendlyUrl(CALENDLY_URL, a1);
     setFallbackUrl(url);
 
@@ -183,12 +222,23 @@ export default function CalendlySection({ a1 }: { a1?: string }) {
         if (mountedUrlRef.current !== url || el.childElementCount === 0) {
           el.innerHTML = "";
           el.removeAttribute("data-processed");
-          window.Calendly.initInlineWidget({ url, parentElement: el });
+          window.Calendly.initInlineWidget({
+            url,
+            parentElement: el,
+            // Calendly setzt die Container-Höhe selbst auf die echte
+            // Inhaltshöhe — sonst scrollt der iframe intern.
+            resize: true,
+          });
           // markiert den Container auch für Calendlys eigenen Auto-Init
           el.setAttribute("data-processed", "true");
           mountedUrlRef.current = url;
         }
-        setStatus("ready");
+        /* Der Skeleton bleibt liegen, bis Calendly die erste echte Höhe
+           meldet (siehe message-Listener oben) — sonst blitzt kurz ein noch
+           höhenloser iframe auf. Notbremse, falls die Nachricht ausbleibt: */
+        readyTimer = setTimeout(() => {
+          setStatus((prev) => (prev === "loading" ? "ready" : prev));
+        }, 6000);
       })
       .catch(() => {
         if (!cancelled) setStatus("error");
@@ -196,6 +246,7 @@ export default function CalendlySection({ a1 }: { a1?: string }) {
 
     return () => {
       cancelled = true;
+      if (readyTimer) clearTimeout(readyTimer);
     };
   }, [a1]);
 
@@ -209,7 +260,8 @@ export default function CalendlySection({ a1 }: { a1?: string }) {
       />
 
       {/* overflow-visible: der Kalender darf KEINE eigene innere Scrollleiste
-          bekommen — die Höhe reicht aus, damit er vollständig hineinpasst. */}
+          bekommen — Calendly setzt die Container-Höhe per Auto-Resize genau
+          auf die Inhaltshöhe, nichts darf hier abgeschnitten werden. */}
       <div className="relative mt-8 overflow-visible rounded-card border border-line bg-base shadow-card">
         {status === "loading" && <CalendarSkeleton />}
 
@@ -237,7 +289,16 @@ export default function CalendlySection({ a1 }: { a1?: string }) {
                scannt beim Laden alle Elemente mit dieser Klasse und liest
                deren data-url. Ohne data-url wirft der Auto-Init null.split,
                bricht ab — und window.Calendly wird nie gesetzt. */
-            className="h-[900px] w-full md:h-[780px]"
+            /* KEINE feste Höhe: Calendly schreibt die echte Inhaltshöhe als
+               Inline-Style hierher. Die min-height trägt nur die
+               Skeleton-Phase und fällt weg, sobald die erste Höhe gemeldet
+               ist — sonst würde sie Calendlys kleinere Desktop-Höhe
+               künstlich aufblähen. */
+            className={
+              autoHeight
+                ? "w-full"
+                : "min-h-[640px] w-full md:min-h-[560px]"
+            }
             style={{ minWidth: "320px", overflow: "visible" }}
           />
         )}
