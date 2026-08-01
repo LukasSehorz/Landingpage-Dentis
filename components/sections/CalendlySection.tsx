@@ -1,9 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import Script from "next/script";
-import Reveal from "@/components/ui/Reveal";
 import SectionHeading from "@/components/ui/SectionHeading";
 
 /* ------------------------------------------------------------------ */
@@ -20,11 +18,6 @@ export const CALENDLY_URL =
 
 const WIDGET_SRC = "https://assets.calendly.com/assets/external/widget.js";
 
-/** Custom-Event, über das das Lead-Formular den Kalender vorausfüllt. */
-const PREFILL_EVENT = "calendly:prefill";
-
-type CalendlyPrefillDetail = { name?: string; email?: string };
-
 declare global {
   interface Window {
     Calendly?: {
@@ -35,13 +28,10 @@ declare global {
       initInlineWidgets?: () => void;
     };
   }
-  interface WindowEventMap {
-    [PREFILL_EVENT]: CustomEvent<CalendlyPrefillDetail>;
-  }
 }
 
 /* ------------------------------------------------------------------ */
-/* Helpers                                                             */
+/* URL-Bau                                                             */
 /* ------------------------------------------------------------------ */
 
 const UTM_KEYS = [
@@ -53,160 +43,223 @@ const UTM_KEYS = [
 ] as const;
 
 /**
- * Baut die Calendly-URL: Vorausfüllung (Name/E-Mail) + Durchreichen der
- * UTM-Parameter aus der Seiten-URL (Traffic kommt aus Meta Ads).
+ * Baut die Calendly-URL:
+ * - `a1` = zusammengefasste Antworten aus dem Qualifikationsformular
+ *   (Calendly füllt damit die erste Freitextfrage der Buchungsseite vor).
+ * - UTM-Parameter der Seiten-URL werden durchgereicht (Traffic aus Meta Ads).
+ *
+ * Kontaktdaten (Name, E-Mail, Telefon) werden bewusst NICHT übergeben — die
+ * erhebt ausschließlich Calendly im Buchungsschritt.
  */
-export function buildCalendlyUrl(
-  baseUrl: string,
-  name?: string,
-  email?: string,
-): string {
-  const params = new URLSearchParams(window.location.search);
+export function buildCalendlyUrl(baseUrl: string, a1?: string): string {
   const url = new URL(baseUrl);
-  if (name) url.searchParams.set("name", name);
-  if (email) url.searchParams.set("email", email);
+  const pageSearch =
+    typeof window === "undefined" ? "" : window.location.search;
+  const params = new URLSearchParams(pageSearch);
+
+  const summary = a1?.trim();
+  if (summary) url.searchParams.set("a1", summary);
+
   UTM_KEYS.forEach((key) => {
     const value = params.get(key);
-    if (value !== null) url.searchParams.set(key, value);
+    if (value) url.searchParams.set(key, value);
   });
+
   /* URLSearchParams kodiert Leerzeichen als "+". Calendly übernimmt das "+"
-     wörtlich in die Vorausfüllung ("Dr.+Max+Mustermann") — deshalb auf %20. */
+     wörtlich in die Vorausfüllung ("Zu+wenige+Anfragen") — deshalb auf %20. */
   url.search = url.searchParams.toString().replace(/\+/g, "%20");
   return url.toString();
 }
 
+/* ------------------------------------------------------------------ */
+/* Lazy-Loader für widget.js                                           */
+/* ------------------------------------------------------------------ */
+
 /**
- * Wird nach erfolgreichem Formular-Submit aufgerufen: lädt das Widget mit
- * vorausgefülltem Namen / E-Mail neu und scrollt den Kalender in den Blick.
+ * Einmaliges Promise: widget.js wird garantiert nur ein einziges Mal in die
+ * Seite gehängt — auch bei StrictMode-Doppelmount oder wenn Vorwärmen und
+ * Formular-Submit gleichzeitig laufen.
  */
-export function prefillCalendly(name: string, email: string): void {
-  if (typeof window === "undefined") return;
-  window.dispatchEvent(
-    new CustomEvent<CalendlyPrefillDetail>(PREFILL_EVENT, {
-      detail: { name, email },
-    }),
+let widgetPromise: Promise<void> | null = null;
+
+export function loadCalendlyWidget(): Promise<void> {
+  if (typeof window === "undefined") return Promise.resolve();
+  if (window.Calendly) return Promise.resolve();
+  if (widgetPromise) return widgetPromise;
+
+  widgetPromise = new Promise<void>((resolve, reject) => {
+    const existing = document.querySelector<HTMLScriptElement>(
+      'script[data-calendly-widget="true"]',
+    );
+    const script = existing ?? document.createElement("script");
+
+    script.addEventListener("load", () => resolve(), { once: true });
+    script.addEventListener(
+      "error",
+      () => {
+        // Laden darf später erneut versucht werden.
+        widgetPromise = null;
+        reject(new Error("Calendly widget.js konnte nicht geladen werden."));
+      },
+      { once: true },
+    );
+
+    if (!existing) {
+      script.src = WIDGET_SRC;
+      script.async = true;
+      script.dataset.calendlyWidget = "true";
+      document.head.appendChild(script);
+    }
+  });
+
+  return widgetPromise;
+}
+
+/**
+ * Vorwärmen: wird aufgerufen, sobald der Nutzer in die Nähe des Formulars
+ * scrollt, damit der Kalender nach dem Absenden sofort steht.
+ */
+export function prewarmCalendlyWidget(): void {
+  void loadCalendlyWidget().catch(() => {
+    /* stiller Fehlschlag — beim Absenden wird erneut versucht */
+  });
+}
+
+/* ------------------------------------------------------------------ */
+/* Skeleton                                                            */
+/* ------------------------------------------------------------------ */
+
+function CalendarSkeleton() {
+  return (
+    <div
+      aria-hidden
+      className="absolute inset-0 z-10 flex flex-col gap-5 rounded-card bg-base p-6 md:p-8"
+    >
+      <div className="h-4 w-32 animate-pulse rounded-full bg-line" />
+      <div className="h-7 w-2/3 animate-pulse rounded-full bg-line" />
+      <div className="h-4 w-1/2 animate-pulse rounded-full bg-line" />
+      <div className="mt-2 grid grid-cols-7 gap-2.5">
+        {Array.from({ length: 35 }).map((_, i) => (
+          <div
+            key={i}
+            className="h-9 animate-pulse rounded-lg bg-mist"
+            style={{ animationDelay: `${(i % 7) * 60}ms` }}
+          />
+        ))}
+      </div>
+      <div className="mt-auto h-4 w-40 animate-pulse rounded-full bg-line" />
+    </div>
   );
 }
 
 /* ------------------------------------------------------------------ */
-/* Section                                                             */
+/* Section — wird erst NACH dem Absenden des Formulars gerendert        */
 /* ------------------------------------------------------------------ */
 
-export default function CalendlySection() {
-  const sectionRef = useRef<HTMLElement | null>(null);
+export default function CalendlySection({ a1 }: { a1?: string }) {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  /** Aktuell gewünschte Widget-URL (inkl. Prefill/UTM), sobald clientseitig bekannt. */
-  const urlRef = useRef<string | null>(null);
+  /** URL, mit der das aktuell hängende Widget aufgebaut wurde. */
+  const mountedUrlRef = useRef<string | null>(null);
+  const [status, setStatus] = useState<"loading" | "ready" | "error">(
+    "loading",
+  );
+  const [fallbackUrl, setFallbackUrl] = useState(CALENDLY_URL);
 
-  /**
-   * Initialisiert das Inline-Widget.
-   * `force` = bestehendes Widget verwerfen und mit neuer URL neu aufbauen.
-   * Ohne `force` wird nichts getan, wenn bereits ein Widget im Container hängt
-   * — das verhindert Doppel-Widgets bei StrictMode-/Doppel-Mount und wenn
-   * widget.js den Container bereits selbst initialisiert hat.
-   */
-  const mountWidget = useCallback((force = false) => {
-    const el = containerRef.current;
-    if (!el || !window.Calendly) return;
-    if (!force && el.childElementCount > 0) return;
-
-    const url = urlRef.current ?? buildCalendlyUrl(CALENDLY_URL);
-    el.innerHTML = "";
-    el.removeAttribute("data-processed");
-    window.Calendly.initInlineWidget({ url, parentElement: el });
-    // markiert den Container auch für Calendlys eigenen Auto-Init als erledigt
-    el.setAttribute("data-processed", "true");
-  }, []);
-
-  /* UTM-Parameter direkt beim ersten Client-Render in die data-url übernehmen,
-     damit auch der Auto-Init von widget.js bereits die richtige URL nutzt. */
   useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    if (!urlRef.current) urlRef.current = buildCalendlyUrl(CALENDLY_URL);
-    el.setAttribute("data-url", urlRef.current);
-    mountWidget();
-  }, [mountWidget]);
+    let cancelled = false;
+    const url = buildCalendlyUrl(CALENDLY_URL, a1);
+    setFallbackUrl(url);
 
-  /* Vorausfüllung nach erfolgreichem Formular-Submit */
-  useEffect(() => {
-    const onPrefill = (event: Event) => {
-      const detail = (event as CustomEvent<CalendlyPrefillDetail>).detail ?? {};
-      urlRef.current = buildCalendlyUrl(
-        CALENDLY_URL,
-        detail.name,
-        detail.email,
-      );
-      containerRef.current?.setAttribute("data-url", urlRef.current);
-      // Läuft ins Leere, solange widget.js noch lädt — der onLoad-Handler
-      // baut das Widget dann mit der bereits gemerkten URL auf.
-      mountWidget(true);
-
-      window.requestAnimationFrame(() => {
-        sectionRef.current?.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
+    loadCalendlyWidget()
+      .then(() => {
+        if (cancelled) return;
+        const el = containerRef.current;
+        if (!el || !window.Calendly) {
+          setStatus("error");
+          return;
+        }
+        // Nur aufbauen, wenn noch kein Widget hängt oder sich die URL geändert
+        // hat — verhindert Doppel-Widgets bei StrictMode-Doppelmount.
+        if (mountedUrlRef.current !== url || el.childElementCount === 0) {
+          el.innerHTML = "";
+          el.removeAttribute("data-processed");
+          window.Calendly.initInlineWidget({ url, parentElement: el });
+          // markiert den Container auch für Calendlys eigenen Auto-Init
+          el.setAttribute("data-processed", "true");
+          mountedUrlRef.current = url;
+        }
+        setStatus("ready");
+      })
+      .catch(() => {
+        if (!cancelled) setStatus("error");
       });
-    };
 
-    window.addEventListener(PREFILL_EVENT, onPrefill as EventListener);
-    return () =>
-      window.removeEventListener(PREFILL_EVENT, onPrefill as EventListener);
-  }, [mountWidget]);
+    return () => {
+      cancelled = true;
+    };
+  }, [a1]);
 
   return (
-    <section
-      id="termin"
-      ref={sectionRef}
-      className="scroll-mt-24 border-t border-line bg-base py-20 md:py-28"
-    >
-      <div className="mx-auto w-full max-w-[900px] px-5 sm:px-6 lg:px-8">
-        <SectionHeading
-          eyebrow="Terminbuchung"
-          title="Sichern Sie sich Ihren Wunschtermin"
-          intro="Wählen Sie im Kalender einfach den Termin, der Ihnen am besten passt. Sie erhalten eine ehrliche Einschätzung für Ihren Standort, kostenlos und unverbindlich."
-          align="center"
-        />
+    <section id="termin" className="scroll-mt-24">
+      <SectionHeading
+        eyebrow="Terminbuchung"
+        title="Sichern Sie sich Ihren Wunschtermin"
+        intro="Wählen Sie im Kalender einfach den Termin, der Ihnen am besten passt. Sie erhalten eine ehrliche Einschätzung für Ihren Standort, kostenlos und unverbindlich."
+        align="center"
+      />
 
-        <Reveal delay={0.1} y={16}>
-          <div className="mt-10 overflow-hidden rounded-card border border-line bg-base shadow-card">
-            <div
-              id="calendly-embed"
-              ref={containerRef}
-              className="calendly-inline-widget h-[840px] sm:h-[880px] md:h-[700px]"
-              data-url={CALENDLY_URL}
-              style={{ minWidth: "320px" }}
-            />
+      {/* overflow-visible: der Kalender darf KEINE eigene innere Scrollleiste
+          bekommen — die Höhe reicht aus, damit er vollständig hineinpasst. */}
+      <div className="relative mt-8 overflow-visible rounded-card border border-line bg-base shadow-card">
+        {status === "loading" && <CalendarSkeleton />}
+
+        {status === "error" ? (
+          <div className="flex min-h-[320px] flex-col items-center justify-center gap-4 p-8 text-center">
+            <p className="max-w-md text-[15px] leading-relaxed text-ink">
+              Der Kalender konnte nicht geladen werden. Sie können die
+              Buchungsseite direkt öffnen — Ihre Angaben sind dort bereits
+              hinterlegt.
+            </p>
+            <a
+              href={fallbackUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-full bg-amber px-6 py-3.5 text-[15px] font-semibold text-white shadow-cta transition-colors hover:bg-amber-600"
+            >
+              Termin in neuem Tab wählen
+            </a>
           </div>
-        </Reveal>
-
-        <p className="mt-4 text-center text-[13px] text-ink/65">
-          Kostenlos &amp; unverbindlich · Kein Verkaufsdruck · Termin jederzeit
-          verschiebbar
-        </p>
-        <p className="mx-auto mt-2 max-w-xl text-center text-[12.5px] leading-relaxed text-ink/50">
-          Die Terminvergabe läuft über Calendly (Calendly LLC, USA); dabei
-          werden die von Ihnen im Buchungsformular angegebenen Daten an Calendly
-          übermittelt. Näheres in unserer{" "}
-          <Link
-            href="/datenschutz#calendly"
-            className="underline underline-offset-2 transition-colors hover:text-navy"
-          >
-            Datenschutzerklärung
-          </Link>
-          .
-        </p>
+        ) : (
+          <div
+            id="calendly-embed"
+            ref={containerRef}
+            /* Bewusst OHNE die Klasse "calendly-inline-widget": widget.js
+               scannt beim Laden alle Elemente mit dieser Klasse und liest
+               deren data-url. Ohne data-url wirft der Auto-Init null.split,
+               bricht ab — und window.Calendly wird nie gesetzt. */
+            className="h-[900px] w-full md:h-[780px]"
+            style={{ minWidth: "320px", overflow: "visible" }}
+          />
+        )}
       </div>
 
-      {/* widget.js wird über die feste id pro Seite nur einmal geladen */}
-      <Script
-        id="calendly-widget-js"
-        src={WIDGET_SRC}
-        strategy="lazyOnload"
-        onLoad={() => mountWidget()}
-        onReady={() => mountWidget()}
-      />
+      <p className="mt-4 text-center text-[13px] text-ink/65">
+        Kostenlos &amp; unverbindlich · Kein Verkaufsdruck · Termin jederzeit
+        verschiebbar
+      </p>
+      <p className="mx-auto mt-2 max-w-xl text-center text-[12.5px] leading-relaxed text-ink/50">
+        Die Terminvergabe läuft über Calendly (Calendly LLC, USA); dabei werden
+        Ihre Formularangaben als Zusammenfassung sowie die von Ihnen im
+        Buchungsformular angegebenen Daten an Calendly übermittelt. Näheres in
+        unserer{" "}
+        <Link
+          href="/datenschutz#calendly"
+          className="underline underline-offset-2 transition-colors hover:text-navy"
+        >
+          Datenschutzerklärung
+        </Link>
+        .
+      </p>
     </section>
   );
 }

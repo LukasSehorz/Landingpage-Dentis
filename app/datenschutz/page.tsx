@@ -34,8 +34,8 @@ export default function DatenschutzPage() {
         den gesetzlichen Datenschutzvorschriften sowie dieser
         Datenschutzerklärung. Die Nutzung dieser Website ist ohne Angabe
         personenbezogener Daten möglich; Daten werden nur erhoben, soweit Sie
-        uns diese aktiv mitteilen (insbesondere über unser Anfrageformular)
-        oder soweit dies technisch erforderlich ist.
+        uns diese aktiv mitteilen (insbesondere über den Buchungskalender nach
+        Ziffer 5) oder soweit dies technisch erforderlich ist.
       </p>
 
       <h2>3. Hosting und Server-Logfiles</h2>
@@ -66,70 +66,96 @@ export default function DatenschutzPage() {
         Website).
       </p>
 
-      <h2>4. Anfrage- und Qualifikationsformular</h2>
+      <h2>4. Qualifikationsformular („Kostenlose Potenzial-Analyse")</h2>
       <p>
-        Wenn Sie unser Formular „Kostenlose Potenzial-Analyse" nutzen,
-        verarbeiten wir die von Ihnen angegebenen Daten:
+        Auf unserer Startseite können Sie ein kurzes Qualifikationsformular
+        ausfüllen. Abgefragt werden ausschließlich Angaben zu Ihrer Praxis:
       </p>
       <ul>
         <li>
-          Angaben zu Ihrer Praxis (Behandlungsschwerpunkt, Anzahl der
-          Behandler, bisherige Wege der Patientengewinnung, aktuelle
-          Herausforderung, Beratungskapazität, Werbebudget, Ihre Rolle in der
-          Praxis, Website Ihrer Praxis)
+          Behandlungsschwerpunkt, Anzahl der Behandler, bisherige Wege der
+          Patientengewinnung, aktuelle Herausforderung, Beratungskapazität,
+          Werbebudget, Ihre Rolle in der Praxis sowie – freiwillig – die
+          Website Ihrer Praxis
         </li>
-        <li>Name</li>
-        <li>Geschäftliche E-Mail-Adresse</li>
-        <li>Telefonnummer</li>
       </ul>
       <p>
-        Zweck der Verarbeitung ist die Bearbeitung Ihrer Anfrage, die
-        Erstellung der kostenlosen Potenzial-, Website- und SEO-Analyse, die
-        Kontaktaufnahme zur Terminvereinbarung sowie die Anbahnung einer
-        möglichen Zusammenarbeit. Rechtsgrundlagen sind Art. 6 Abs. 1 lit. b
-        DSGVO (vorvertragliche Maßnahmen auf Ihre Anfrage) sowie Ihre
-        Einwilligung nach Art. 6 Abs. 1 lit. a DSGVO, die Sie im Formular
-        erteilen.
+        Kontaktdaten (Name, E-Mail-Adresse, Telefonnummer) erhebt das Formular
+        nicht. Ihre Antworten verbleiben zunächst ausschließlich in Ihrem
+        Browser: Sie werden nicht an einen Server von uns übertragen, dort
+        nicht gespeichert und nicht ausgewertet.
       </p>
       <p>
-        Ihre Daten werden gelöscht, sobald sie für die genannten Zwecke nicht
-        mehr erforderlich sind und keine gesetzlichen Aufbewahrungspflichten
-        entgegenstehen. Eine Weitergabe an Dritte erfolgt nicht, ausgenommen
-        die unter dieser Erklärung genannten Auftragsverarbeiter.
+        Nach dem Absenden des Formulars wird der Buchungskalender eingeblendet
+        (Ziffer 5). Ihre Antworten werden dabei zu einem einzeiligen Freitext
+        zusammengefasst und als Vorausfüllung an das Buchungsformular von
+        Calendly übergeben, damit Sie sie dort nicht erneut eingeben müssen.
+        Zu uns gelangen die Angaben erst, wenn Sie die Terminbuchung in
+        Calendly abschließen. Brechen Sie ab oder schließen Sie die Seite,
+        gehen die Angaben ersatzlos verloren.
+      </p>
+      <p>
+        Zweck der Verarbeitung ist die Vorbereitung des kostenlosen
+        Erstgesprächs einschließlich der Potenzial-, Website- und SEO-Analyse
+        sowie die Anbahnung einer möglichen Zusammenarbeit. Rechtsgrundlagen
+        sind Art. 6 Abs. 1 lit. b DSGVO (vorvertragliche Maßnahmen auf Ihre
+        Anfrage) und Art. 6 Abs. 1 lit. f DSGVO (berechtigtes Interesse an
+        einer bedarfsgerechten Vorbereitung des von Ihnen angefragten
+        Gesprächs). Eine Einwilligung nach Art. 6 Abs. 1 lit. a DSGVO holen wir
+        für das Formular nicht mehr ein, da über das Formular selbst keine
+        personenbezogenen Daten an uns übermittelt werden; die für die Buchung
+        erforderlichen Angaben erheben Sie unmittelbar in Calendly.
+      </p>
+      <p>
+        Über Calendly zu uns gelangte Daten werden gelöscht, sobald sie für die
+        genannten Zwecke nicht mehr erforderlich sind und keine gesetzlichen
+        Aufbewahrungspflichten entgegenstehen. Eine Weitergabe an Dritte
+        erfolgt nicht, ausgenommen die unter dieser Erklärung genannten
+        Auftragsverarbeiter.
       </p>
 
       <h2 id="calendly">5. Terminbuchung (Calendly)</h2>
       <p>
         Für die Vereinbarung des kostenlosen Erstgesprächs nutzen wir den
         Terminbuchungsdienst Calendly des Anbieters Calendly LLC, 271 17th St
-        NW, Atlanta, Georgia 30363, USA („Calendly"). Der Buchungskalender ist
-        unterhalb des Anfrageformulars unmittelbar in unsere Startseite
-        eingebunden, sodass Sie Ihren Termin direkt selbst auswählen können.
+        NW, Atlanta, Georgia 30363, USA („Calendly"). Der Buchungskalender
+        wird auf unserer Startseite eingeblendet, sobald Sie das
+        Qualifikationsformular nach Ziffer 4 abgesendet haben, sodass Sie Ihren
+        Termin direkt selbst auswählen können.
       </p>
       <p>
-        Der Kalender wird als iFrame bereits beim Aufruf der Seite geladen.
-        Dabei wird eine Verbindung zu Servern von Calendly aufgebaut und es
-        werden technisch notwendige Verbindungsdaten übermittelt – insbesondere
-        Ihre IP-Adresse, Informationen zu Browser und Endgerät, die
-        Referrer-URL sowie Datum und Uhrzeit des Abrufs. Calendly setzt dabei
-        eigene Cookies bzw. vergleichbare Technologien, die für den Betrieb der
-        Buchungsfunktion erforderlich sind.
+        Der Kalender wird nicht bereits beim Aufruf der Seite geladen. Das für
+        die Einbindung erforderliche Skript wird von den Servern von Calendly
+        nachgeladen, sobald Sie bis in die Nähe des Formulars scrollen; der
+        Kalender selbst (iFrame) wird erst nach dem Absenden des Formulars
+        aufgebaut. Dabei wird eine Verbindung zu Servern von Calendly
+        hergestellt und es werden technisch notwendige Verbindungsdaten
+        übermittelt – insbesondere Ihre IP-Adresse, Informationen zu Browser
+        und Endgerät, die Referrer-URL sowie Datum und Uhrzeit des Abrufs.
+        Calendly setzt dabei eigene Cookies bzw. vergleichbare Technologien,
+        die für den Betrieb der Buchungsfunktion erforderlich sind.
       </p>
       <p>
-        Haben Sie zuvor das Anfrageformular abgesendet, werden Ihr Name und
-        Ihre E-Mail-Adresse in den Kalender vorausgefüllt, damit Sie diese
-        Angaben nicht erneut eingeben müssen. Sofern Sie über eine
-        Werbeanzeige zu uns gelangt sind, werden zusätzlich die in der
-        Seiten-URL enthaltenen Kampagnenparameter (utm_source, utm_medium,
-        utm_campaign, utm_content, utm_term) an Calendly übergeben, damit wir
-        Buchungen der jeweiligen Kampagne zuordnen können. Diese Parameter
-        enthalten keine personenbezogenen Angaben zu Ihnen, sondern
+        Beim Einblenden des Kalenders werden Ihre Antworten aus dem
+        Qualifikationsformular als zusammengefasster Freitext an Calendly
+        übergeben und dort in ein Freitextfeld des Buchungsformulars
+        vorausgefüllt (Beispiel: „Implantat-Schwerpunkt: Ja, Schwerpunkt |
+        Behandler: 2–3 | …"). Ihre Kontaktdaten – Name, E-Mail-Adresse und
+        Telefonnummer – geben Sie ausschließlich unmittelbar in Calendly ein;
+        eine Vorausfüllung dieser Felder durch uns findet nicht statt. Sofern
+        Sie über eine Werbeanzeige zu uns gelangt sind, werden zusätzlich die
+        in der Seiten-URL enthaltenen Kampagnenparameter (utm_source,
+        utm_medium, utm_campaign, utm_content, utm_term) an Calendly übergeben,
+        damit wir Buchungen der jeweiligen Kampagne zuordnen können. Diese
+        Parameter enthalten keine personenbezogenen Angaben zu Ihnen, sondern
         ausschließlich Bezeichnungen unserer Anzeigen.
       </p>
       <p>
         Buchen Sie einen Termin, verarbeitet Calendly darüber hinaus die von
-        Ihnen im Kalender eingegebenen Daten (Name, E-Mail-Adresse, gewählter
-        Zeitpunkt, Zeitzone sowie etwaige Freitextangaben) und erzeugt
+        Ihnen im Kalender eingegebenen Daten (Name, E-Mail-Adresse,
+        Telefonnummer, gewählter Zeitpunkt, Zeitzone sowie die
+        Freitextangaben einschließlich der nach Ziffer 4 übergebenen
+        Zusammenfassung Ihrer Formularantworten) und erzeugt
         automatisch einen Videokonferenz-Link. Der Termin wird in unseren
         Kalender übernommen; Sie erhalten von Calendly eine Bestätigung sowie
         Erinnerungs-E-Mails.

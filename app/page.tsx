@@ -9,7 +9,6 @@ import Fit from "@/components/sections/Fit";
 import Differentiation from "@/components/sections/Differentiation";
 import Faq from "@/components/sections/Faq";
 import FormSection from "@/components/sections/FormSection";
-import CalendlySection from "@/components/sections/CalendlySection";
 import Footer from "@/components/sections/Footer";
 import MobileStickyCta from "@/components/sections/MobileStickyCta";
 
@@ -48,11 +47,10 @@ export default function Home() {
         {/* 09 · Differenzierung — Warum Lukas & Jannik */}
         <Differentiation />
 
-        {/* 11 · Mehrstufiges Qualifikationsformular  +  12 · Nach dem Absenden */}
+        {/* 11 · Qualifikationsformular → 12 · Bestätigung + 13 · Calendly.
+            Der Kalender wird erst nach dem Absenden gerendert — davor ist er
+            weder im Viewport noch weiter unten auf der Seite vorhanden. */}
         <FormSection />
-
-        {/* 13 · Terminbuchung — Calendly-Kalender direkt unter dem Formular */}
-        <CalendlySection />
 
         {/* FAQ — Einwand-Behandlung (jetzt letzte Section vor dem Footer) */}
         <Faq />
