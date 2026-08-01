@@ -82,6 +82,12 @@ export function buildCalendlyUrl(baseUrl: string, a1?: string): string {
     if (value) url.searchParams.set(key, value);
   });
 
+  /* Calendlys eigenen Cookie-Banner im iFrame unterdrücken. Er verdeckte auf
+     dem Handy das halbe Buchungsformular. Die Einwilligung für Calendlys
+     Cookies tragen damit wir — siehe Ziffer 5 der Datenschutzerklärung.
+     Wirkt nur im Embed, nicht beim direkten Aufruf der Buchungsseite. */
+  url.searchParams.set("hide_gdpr_banner", "1");
+
   /* URLSearchParams kodiert Leerzeichen als "+". Calendly übernimmt das "+"
      wörtlich in die Vorausfüllung ("Zu+wenige+Anfragen") — deshalb auf %20. */
   url.search = url.searchParams.toString().replace(/\+/g, "%20");

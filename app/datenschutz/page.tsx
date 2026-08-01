@@ -136,6 +136,18 @@ export default function DatenschutzPage() {
         die für den Betrieb der Buchungsfunktion erforderlich sind.
       </p>
       <p>
+        Calendly blendet in eingebetteten Kalendern normalerweise einen eigenen
+        Cookie-Hinweis ein. Diesen haben wir bewusst ausgeblendet, weil er auf
+        mobilen Geräten das Buchungsformular verdeckt hat. Calendly setzt seine
+        Cookies dessen ungeachtet; die datenschutzrechtliche Verantwortung dafür
+        liegt damit bei uns und nicht bei Calendly. Wir stützen das Setzen
+        dieser Informationen auf § 25 Abs. 2 Nr. 2 TDDDG, da der Kalender
+        ausschließlich auf Ihre ausdrückliche Handlung hin geladen wird – er
+        erscheint erst, nachdem Sie das Formular abgesendet haben – und damit
+        Bestandteil des von Ihnen angeforderten Dienstes ist. Zu Analyse- oder
+        Werbezwecken werden über den Kalender keine Informationen ausgelesen.
+      </p>
+      <p>
         Beim Einblenden des Kalenders werden Ihre Antworten aus dem
         Qualifikationsformular als zusammengefasster Freitext an Calendly
         übergeben und dort in ein Freitextfeld des Buchungsformulars
