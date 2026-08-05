@@ -211,26 +211,63 @@ export default function DatenschutzPage() {
         .
       </p>
 
-      <h2>6. Cookies</h2>
+      <h2>6. Cookies und Einwilligung</h2>
       <p>
-        Diese Website setzt derzeit keine Cookies ein, die einer Einwilligung
-        bedürfen. Es werden keine Analyse- oder Marketing-Cookies gesetzt. Die
-        vom Buchungskalender nach Ziffer 5 gesetzten Informationen sind für den
-        Betrieb der von Ihnen angeforderten Terminvereinbarung unbedingt
-        erforderlich (§ 25 Abs. 2 Nr. 2 TDDDG) und dienen weder der Analyse
-        noch der Werbung. Sollten wir künftig einwilligungspflichtige Dienste
-        einbinden (z. B. Analyse- oder Werbetools), werden wir Sie vor dem
-        Setzen solcher Cookies über ein Einwilligungsbanner um Ihre Zustimmung
-        nach § 25 TDDDG bitten und diese Erklärung aktualisieren.
+        Für den reinen Betrieb dieser Website sind keine einwilligungspflichtigen
+        Cookies erforderlich. Die vom Buchungskalender nach Ziffer 5 gesetzten
+        Informationen sind für den Betrieb der von Ihnen angeforderten
+        Terminvereinbarung unbedingt erforderlich (§ 25 Abs. 2 Nr. 2 TDDDG) und
+        dienen weder der Analyse noch der Werbung.
+      </p>
+      <p>
+        Darüber hinaus setzen wir Reichweitenmessung ein, die ausschließlich mit
+        Ihrer Einwilligung nach § 25 Abs. 1 TDDDG und Art. 6 Abs. 1 lit. a DSGVO
+        arbeitet. Beim ersten Aufruf der Seite erscheint dafür ein
+        Einwilligungsbanner, in dem Sie die Kategorien „Statistik" und
+        „Marketing" einzeln zulassen oder ablehnen können. Ihre Auswahl
+        speichern wir lokal in Ihrem Browser (localStorage, Schlüssel
+        <code>fs_consent</code>), damit wir Sie nicht bei jedem Besuch erneut
+        fragen. Diese Speicherung erfolgt technisch bedingt zur Umsetzung Ihrer
+        Entscheidung.
       </p>
 
-      <h2>7. Conversion-Tracking und Werbeanzeigen</h2>
+      <h2>7. Google Tag Manager und Google Analytics</h2>
       <p>
-        <Ph>Nur aufnehmen, wenn Meta Pixel / Google Ads Tag tatsächlich
-        eingebunden werden — dann zwingend zusätzlich ein Consent-Banner
-        einsetzen und hier Anbieter, Zweck, Rechtsgrundlage (Einwilligung,
-        Art. 6 Abs. 1 lit. a DSGVO), Speicherdauer und Widerrufsmöglichkeit
-        beschreiben.</Ph>
+        Wir verwenden den Google Tag Manager sowie Google Analytics 4, beides
+        Dienste der Google Ireland Limited, Gordon House, Barrow Street, Dublin
+        4, Irland. Der Google Tag Manager verwaltet lediglich die Einbindung der
+        Messwerkzeuge und erstellt selbst keine Nutzerprofile. Google Analytics
+        wertet aus, wie viele Personen unsere Seite besuchen, über welche Wege
+        sie kommen und welche Abschnitte sie nutzen.
+      </p>
+      <p>
+        Wir haben den Google Consent Mode v2 eingerichtet. Solange Sie der
+        Kategorie „Statistik" beziehungsweise „Marketing" im Banner nicht
+        zugestimmt haben, sind die entsprechenden Speicherzugriffe blockiert und
+        es werden keine Analyse- oder Werbe-Cookies gesetzt. Erst nach Ihrer
+        Einwilligung erfassen die Dienste Daten. Dabei können Ihre IP-Adresse,
+        Geräte- und Browserinformationen sowie Ihr Verhalten auf der Seite
+        verarbeitet und an Server von Google übermittelt werden, auch in die
+        USA. Für die Übermittlung in die USA stützen wir uns auf die
+        Standardvertragsklauseln der EU-Kommission sowie darauf, dass Google
+        LLC nach dem EU-US Data Privacy Framework zertifiziert ist.
+      </p>
+      <p>
+        Rechtsgrundlage ist Ihre Einwilligung nach Art. 6 Abs. 1 lit. a DSGVO in
+        Verbindung mit § 25 Abs. 1 TDDDG. Sie können Ihre Einwilligung jederzeit
+        mit Wirkung für die Zukunft widerrufen, indem Sie das Einwilligungsbanner
+        erneut öffnen und Ihre Auswahl ändern oder alles ablehnen. Die
+        Rechtmäßigkeit der bis zum Widerruf erfolgten Verarbeitung bleibt davon
+        unberührt. Weitere Informationen finden Sie in der Datenschutzerklärung
+        von Google unter{" "}
+        <a
+          href="https://policies.google.com/privacy"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          policies.google.com/privacy
+        </a>
+        .
       </p>
 
       <h2>8. Ihre Rechte</h2>
